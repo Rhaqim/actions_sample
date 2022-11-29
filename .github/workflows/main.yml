@@ -20,4 +20,5 @@ jobs:
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
+          message: ${{ github.actor }} deployed {{ env.GITHUB_REF_NAME }} branch
         if: always()
