@@ -1,0 +1,24 @@
+# Github actions for web deployment
+
+name: Web Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
+    steps:
+      - name: Say Hello World
+        run: echo "Hello World"
+      - name: Notify Slack
+        uses: act10ns/slack@v2
+        with: 
+          status: ${{ job.status }}
+          channel: '#deploy'
+          steps: ${{ toJson(steps) }}
+        if: always()
