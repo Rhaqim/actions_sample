@@ -10,13 +10,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Say Hello World
         run: echo "Hello World"
       - name: Notify Slack
-        uses: act10ns/slack@v2
+        uses: act10ns/slack@v1
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-          webhook-url: "https://hooks.slack.com/services/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"
         if: always()
