@@ -10,8 +10,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      SLACK_WEBHOOK_URL: https://hooks.slack.com/services/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
     steps:
       - name: Say Hello World
         run: echo "Hello World"
@@ -20,4 +18,5 @@ jobs:
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
+          webhook-url: https://hooks.slack.com/services/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
         if: always()
