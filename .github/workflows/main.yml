@@ -20,5 +20,5 @@ jobs:
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-          message: ${{ github.ref == 'refs/heads/main' && format('(0) deployed to (1) to production', github.actor, github.ref) || format('(0) deployed to (1) to staging', github.actor, github.ref) }}
+          message: ${{ github.ref == 'refs/heads/main' && 'github.actor deployed to github.ref to production' || 'github.actor deployed to github.ref to staging' }}
         if: always()
