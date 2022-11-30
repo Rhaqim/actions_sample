@@ -20,10 +20,5 @@ jobs:
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-          run: |
-            if [ ${{ github.ref }} == "refs/heads/main" ]; then
-              message: ${{ github.actor }} deployed {{ env.GITHUB_REF_NAME }} branch to production
-            else
-              message: ${{ github.actor }} deployed {{ env.GITHUB_REF_NAME }} branch to staging
-            fi
+          message: ${{ github.ref == 'refs/heads/main' && format('(0) deployed to (1) to production', github.actor, github.ref) || format('(0) deployed to (1) to staging', github.actor, github.ref) }}
         if: always()
