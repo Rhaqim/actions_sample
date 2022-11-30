@@ -20,5 +20,5 @@ jobs:
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-          message: ${{ github.ref == 'refs/heads/main' && format('Status {0}.toUpperCase() for PROD', job.status) || format('Status {0}.toUpperCase() for DEV', job.status) }}
+          message: ${{ github.ref == 'refs/heads/main' && format('Status {0} for PROD', {{jobStatus}}) || format('Status {0} for DEV', {{jobStatus}}) }}
         if: always()
