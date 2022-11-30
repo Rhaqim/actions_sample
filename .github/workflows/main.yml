@@ -20,5 +20,5 @@ jobs:
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-          message: ${{ github.ref == 'refs/heads/main' && format('Status {0} for PROD', job.status) || format('Status {0} for DEV', job.status) }}
+          message: ${{ format('{0} {1} {2}', job.status == 'success' && ':white_check_mark:' || ':x:', github.ref == 'refs/heads/main' && format('{0} deployed to {1} to production', github.actor, github.ref) || format('{0} deployed to {1} to staging', github.actor, github.ref), job.status == 'success' && ':tada:' || ':boom:') }}}
         if: always()
