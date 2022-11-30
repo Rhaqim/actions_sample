@@ -14,11 +14,10 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
     steps:
       - name: Say Hello World
-        run: echo "Hello World"
+        run: echo "Hello World" > hello.txt cat hrllo.txt
       - name: Notify Slack
         uses: act10ns/slack@v1
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-          message: ${{ github.actor }} deployed {{ env.GITHUB_REF_NAME }} branch
         if: always()
