@@ -15,21 +15,20 @@ jobs:
     steps:
       - name: Say Hello World
         run: echo "Hello World" > hello.txt cat hrllo.txt
+      - name: Slack Notification set Env
+        id: slack_env
+        run: |
+          if [ ${{ github.ref }} == "refs/heads/main" ]; then
+            echo "::set-output name=slackMessage::Deployed to Production"
+            echo "::set-output name=slackEmoji:::rocket:"
+          else
+            echo "::set-output name=slackMessage::Deployed to Staging"
+            echo "::set-output name=slackEmoji:::x:"
+          fi
       - name: Notify Slack
         uses: act10ns/slack@v1
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-          run: |
-            echo "Setting up ENV variables for message:"
-            echo "SLACK_WEBHOOK_URL: $SLACK_WEBHOOK_URL"
-            echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
-            if [ "${{ github.ref }}" = "refs/heads/master" ]; then
-              SLACK_COLOR="#36a64f"
-              SLACK_TITLE="Deployment to Production"
-            else
-              SLACK_COLOR="#f9a41b"
-              SLACK_TITLE="Deployment to Staging"
-            fi
-          message: ${{ format('{0} is {1}', env.SLACK_TITLE, job.status) }}
+          message: ${{ format('{0} {1}', steps.slack_env.outputs.slackEmoji, steps.slack_env.outputs.slackMessage) }}
         if: always()
