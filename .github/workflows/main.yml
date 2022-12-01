@@ -20,5 +20,16 @@ jobs:
         with: 
           status: ${{ job.status }}
           steps: ${{ toJson(steps) }}
-          message: ${{ format('{0} {1}', github.ref == 'refs/heads/main' && format('Deployment for PROD {0}', job.status) || format('Deployment for DEV {0}', job.status), job.status == 'success' && ':white_check_mark:' || ':x:') }}
+          run: |
+            echo "Setting up ENV variables for message:"
+            echo "SLACK_WEBHOOK_URL: $SLACK_WEBHOOK_URL"
+            echo "GITHUB_REPOSITORY: $GITHUB_REPOSITORY"
+            if [ "${{ github.ref }}" = "refs/heads/master" ]; then
+              SLACK_COLOR="#36a64f"
+              SLACK_TITLE="Deployment to Production"
+            else
+              SLACK_COLOR="#f9a41b"
+              SLACK_TITLE="Deployment to Staging"
+            fi
+          message: ${{ format('{0} is {1}', env.SLACK_TITLE, job.status) }}
         if: always()
